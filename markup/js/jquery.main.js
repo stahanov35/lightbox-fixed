@@ -22,7 +22,7 @@ jQuery(function(){
 		jQuery('p').on('click', function() {
 			lightbox.show();
 			lightbox.css({
-				position: 'hidden'
+				height: body.innerHeight() + 'px'
 			})
 		});
 
