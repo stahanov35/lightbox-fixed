@@ -16,25 +16,27 @@ jQuery(function(){
 	}
 
 	function initLightbox() {
-		var lightbox = jQuery('.lightbox-overlay'),
-			body = jQuery('body');
+		var lightbox 		= jQuery('.lightbox-holder, .lightbox-overlay'),
+			contentHolder	= jQuery('#wrapper'),
+			body 	 		= jQuery('body'),
+			scrollTop;
 
 		jQuery('p').on('click', function() {
+			scrollTop = jQuery(window).scrollTop();
+			contentHolder.css({
+				position: 'fixed',
+				width: 100 + '%',
+				top: -scrollTop + 'px'
+			});
 			lightbox.show();
-			lightbox.css({
-				height: body.innerHeight() + 'px'
-			})
+			jQuery(window).scrollTop(0);
 		});
 
-		jQuery('.close').on('click', function() {
+		jQuery('.close').add(lightbox).on('click', function() {
 			event.preventDefault();
+			contentHolder.removeAttr('style');
 			lightbox.hide();
+			jQuery(window).scrollTop(scrollTop);
 		});
 	}
-
-	// $('html > *').contents().filter(function () { 
-	// 	if (this.nodeType === 3 && String(this.nodeValue).indexOf('Register')) {
-	// 			$(this).remove();
-	// 		}
-	// });
 })
