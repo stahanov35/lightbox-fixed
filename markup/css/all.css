@@ -6,6 +6,7 @@ body{
 	margin:0;
 	color: #fff;
 	-webkit-text-size-adjust:none;
+	position: relative;
 }
 p{
 	position: relative;
@@ -26,6 +27,7 @@ p span{
 	background: #7db9e8;
 	background: -webkit-linear-gradient(top,  #7db9e8 0%,#1e5799 100%);
 	background: linear-gradient(to bottom,  #7db9e8 0%,#1e5799 100%);
+	position: relative;
 }
 .header{
 	position: fixed;
@@ -39,30 +41,37 @@ p span{
 }
 .lightbox-holder{
 	display: none;
+	top: 0;
     left: 0;
-    min-height: 100%;
     position: absolute;
     right: 0;
-    top: 0;
+    bottom: 0;
     z-index: 9900;
+}
+.lightbox-holder-fixed .lightbox-overlay,
+.lightbox-holder-fixed{
+	position: fixed;
+	height: auto;
 }
 .lightbox-overlay{
 	background: rgba(0, 0, 0, .7);
 	display: none;
 	height: auto;
-	min-height: 100%;
-    position: fixed;
+    position: absolute;
     left: 0;
     right: 0;
     top: 0;
+    bottom: 0;
 }
 .lightbox-wrapper{
 	position: relative;
 	background: #fff;
-	padding: 20px;
-	width: 600px;
+	padding: 10px;
+	max-width: 600px;
 	margin: 0 auto;
 	color: #000;
+	overflow: auto;
+	z-index: 2;
 }
 .lightbox-loading {
 	display: none;
@@ -84,7 +93,9 @@ p span{
 	background: url('../images/loading.gif') center center no-repeat;
 }
 .lightbox{
-	
+	padding: 10px;
+	height: calc(100vh - 20px);
+	overflow: auto;
 }
 input{
 	width: 100%;
@@ -93,4 +104,13 @@ input{
 }
 input[type=submit]{
 	padding: 10px;
+}
+@media only screen and (max-width: 767px) {
+	body{
+		font-size: 12px;
+		line-height: 14px;
+	}
+	.lightbox-wrapper{
+		width: 280px;
+	}
 }

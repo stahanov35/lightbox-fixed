@@ -1,7 +1,9 @@
 jQuery(function(){
+
 	initLightbox();
 
-	var ps = document.querySelectorAll('p');
+	var iOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream,
+		ps = document.querySelectorAll('p');
 
 	Array.prototype.slice.call(ps).forEach(function(element, index) {
 		addElement(element, index);
@@ -16,27 +18,54 @@ jQuery(function(){
 	}
 
 	function initLightbox() {
-		var lightbox 		= jQuery('.lightbox-holder, .lightbox-overlay'),
+		var lightboxHolder 	= jQuery('.lightbox-holder'),
+			overlay			= jQuery('.lightbox-overlay'),
+			lightbox 		= jQuery('.lightbox-wrapper'),
 			contentHolder	= jQuery('#wrapper'),
 			body 	 		= jQuery('body'),
-			scrollTop;
+			fixedClass		= 'lightbox-holder-fixed',
+			scrollTopPos;
 
-		jQuery('p').on('click', function() {
-			scrollTop = jQuery(window).scrollTop();
-			contentHolder.css({
-				position: 'fixed',
-				width: 100 + '%',
-				top: -scrollTop + 'px'
-			});
-			lightbox.show();
-			jQuery(window).scrollTop(0);
+		contentHolder.on('click', function() {
+			scrollTopPos = jQuery(window).scrollTop();
+
+			if (!iOS){
+				lightboxHolder.addClass(fixedClass);
+
+				jQuery(this).css({
+					position: 'fixed',
+					width: 100 + '%',
+					top: -scrollTopPos + 'px'
+				});
+				jQuery(window).scrollTop(0);
+			}
+			else{
+				lightboxHolder.removeClass(fixedClass);
+				lightbox.css('top', scrollTopPos + 'px');
+			}
+			
+			overlay.show();
+			lightboxHolder.show();
+			
 		});
 
-		jQuery('.close').add(lightbox).on('click', function() {
+		jQuery('.close').on('click', function() {
 			event.preventDefault();
-			contentHolder.removeAttr('style');
-			lightbox.hide();
-			jQuery(window).scrollTop(scrollTop);
+
+			if (!iOS){
+				contentHolder.css({
+					position: 'relative',
+					top: 0 + 'px'
+				});
+				jQuery(window).scrollTop(scrollTopPos);
+			}
+			else{
+				
+			}
+			
+			overlay.hide();
+			lightboxHolder.hide();
+			
 		});
 	}
 })
